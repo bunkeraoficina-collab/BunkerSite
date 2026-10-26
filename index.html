@@ -1023,8 +1023,8 @@ main { overflow-x: clip; }
   }
   function big() {
     var vw = window.innerWidth, vh = window.innerHeight;
-    var avail = vh - 150;
-    var s = Math.min(vw * .9 / G.W, avail * .97 / G.H);
+    var avail = vh - 138;
+    var s = Math.min(vw * .94 / G.W, avail * .985 / G.H);
     var ox = (vw - G.W * s) / 2, oy = Math.max(8, (avail - G.H * s) / 2);
     return { e: { x: ox + G.ex * s, y: oy + G.ey * s, s: s }, w: { x: ox + G.wx * s, y: oy + G.wy * s, s: s } };
   }
