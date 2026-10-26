@@ -81,11 +81,11 @@ img.fl { position: fixed; left: 0; top: 0; z-index: 110; max-width: none !import
 #intro { display: none; position: fixed; inset: 0; z-index: 100; cursor: pointer; }
 html.intro #intro { display: block; }
 .door { position: absolute; top: 0; bottom: 0; width: 50.1%; will-change: transform;
-  background: #7c7f82; }
+  background: #43443f; }
 .door.l { left: 0; box-shadow: inset 70px 0 70px -50px rgba(0, 0, 0, .2), inset -1px 0 0 rgba(0, 0, 0, .28); }
 .door.r { right: 0; box-shadow: inset -70px 0 70px -50px rgba(0, 0, 0, .2), inset 1px 0 0 rgba(0, 0, 0, .28); }
 /* faixa amarela horizontal, como na porta da oficina */
-.door::after { content: ""; position: absolute; left: 0; right: 0; top: 37%; height: clamp(54px, 9vh, 104px); background: linear-gradient(#e9ae10, #f1b712 50%, #e6aa0f); box-shadow: 0 -1px 0 rgba(0, 0, 0, .22), 0 1px 0 rgba(0, 0, 0, .22); }
+.door::after { content: ""; position: absolute; left: 0; right: 0; top: 37%; height: clamp(54px, 9vh, 104px); background: linear-gradient(#d19b12, #dba50f 50%, #cf9810); box-shadow: 0 -1px 0 rgba(0, 0, 0, .22), 0 1px 0 rgba(0, 0, 0, .22); }
 /* maçaneta de puxar, perto do encontro das portas */
 .door::before { content: ""; position: absolute; top: 60%; width: 118px; height: 22px; border-radius: 4px; background: linear-gradient(#a3a6a8, #6a6d70 50%, #4d5053); box-shadow: 0 3px 6px rgba(0, 0, 0, .45), inset 0 1px 0 rgba(255, 255, 255, .35); }
 .door.l::before { right: 310px; }
@@ -106,8 +106,8 @@ html.bolts .bolt:nth-child(3) { transition-delay: .24s; }
 #stageNote { margin: 0; max-width: 100%; text-align: center; padding: 9px 16px; background: rgba(17, 14, 11, .94); font: 400 12px/1.5 var(--f-mono); letter-spacing: .22em; text-transform: uppercase; color: var(--muted); transition: opacity .5s; }
 #stageNote::before { content: ""; display: inline-block; width: 8px; height: 8px; margin-right: 12px; border-radius: 50%; background: var(--yellow-hi); box-shadow: 0 0 10px var(--yellow-hi); animation: blink 1.4s steps(2, jump-none) infinite; vertical-align: 1px; }
 @keyframes blink { 50% { opacity: .15; } }
-#skip { position: absolute; z-index: 3; right: max(16px, env(safe-area-inset-right, 0px)); top: calc(16px + env(safe-area-inset-top, 0px)); background: none; border: 1px solid rgba(20, 17, 13, .6); color: #14110d; font: 400 12px/1 var(--f-mono); letter-spacing: .18em; text-transform: uppercase; padding: 10px 14px; cursor: pointer; }
-#skip:hover { color: #14110d; border-color: #14110d; background: var(--yellow); }
+#skip { position: absolute; z-index: 3; right: max(16px, env(safe-area-inset-right, 0px)); top: calc(16px + env(safe-area-inset-top, 0px)); background: none; border: 1px solid rgba(230, 223, 206, .5); color: #e6dfce; font: 400 12px/1 var(--f-mono); letter-spacing: .18em; text-transform: uppercase; padding: 10px 14px; cursor: pointer; }
+#skip:hover { color: #14110d; border-color: var(--yellow); background: var(--yellow); }
 
 /* ===== topo ===== */
 .top { position: fixed; top: 0; left: 0; right: 0; z-index: 60; padding-top: env(safe-area-inset-top, 0px); background: linear-gradient(#221e18, #171411); box-shadow: 0 10px 30px rgba(0, 0, 0, .45); }
