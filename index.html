@@ -29,6 +29,10 @@
 }
 </script>
 <meta name="theme-color" content="#bdbfc2">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Stencil+Display:wght@700;800;900&family=IBM+Plex+Sans:wght@400;500;600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
@@ -235,6 +239,33 @@ html.intro:not(.opening) .h-in { transform: translateY(36px); }
 }
 @media (max-width: 760px) { .svc li { grid-template-columns: minmax(0, 1fr); } .svc .tags { text-align: left; } }
 
+/* serviços: abre ao clicar, com descrição e fotos em sequência */
+.svc h3 button { all: unset; box-sizing: border-box; display: inline-flex; align-items: center; gap: 14px; cursor: pointer; }
+.svc h3 button:focus-visible { outline: 3px solid var(--yellow); outline-offset: 6px; }
+.svc .plus { flex: none; position: relative; width: 26px; height: 26px; background: var(--yellow); box-shadow: inset 0 0 0 2px var(--ink); transition: transform .4s cubic-bezier(.2, .8, .2, 1), background .3s; }
+.svc .plus::before, .svc .plus::after { content: ""; position: absolute; left: 50%; top: 50%; width: 12px; height: 3px; margin: -1.5px 0 0 -6px; background: var(--ink); }
+.svc .plus::after { transform: rotate(90deg); transition: transform .4s cubic-bezier(.2, .8, .2, 1); }
+.svc li.open .plus { transform: rotate(180deg); }
+.svc li.open .plus::after { transform: rotate(0); }
+.svc li.open::before { transform: scaleX(1); }
+.svc-panel { grid-column: 1 / -1; display: grid; grid-template-rows: 0fr; visibility: hidden; transition: grid-template-rows .5s cubic-bezier(.2, .8, .2, 1), visibility 0s .5s; cursor: default; }
+.svc li.open .svc-panel { grid-template-rows: 1fr; visibility: visible; transition: grid-template-rows .5s cubic-bezier(.2, .8, .2, 1), visibility 0s; }
+.svc-in { min-height: 0; overflow: hidden; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: 28px 36px; align-items: start; }
+.svc li.open .svc-in { padding-top: 22px; }
+.svc .svc-desc { color: var(--fg); font-size: 18px; max-width: 46ch; }
+.gal { position: relative; }
+.slides { position: relative; aspect-ratio: 16 / 10; background: var(--wall); box-shadow: inset 0 0 0 2px var(--edge); overflow: hidden; }
+.slide { position: absolute; inset: 0; display: grid; place-items: center; opacity: 0; transition: opacity .7s; background: repeating-linear-gradient(45deg, #26221c 0 14px, #1d1915 14px 28px); }
+.slide.on { opacity: 1; }
+.slide img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.slide span { font: 400 13px/1 var(--f-mono); letter-spacing: .18em; text-transform: uppercase; color: var(--yellow); border: 1px dashed var(--yellow); padding: 10px 14px; }
+.dots { display: flex; gap: 8px; margin-top: 12px; }
+.dot { all: unset; box-sizing: border-box; width: 26px; height: 6px; background: var(--edge); cursor: pointer; opacity: .5; transition: background .3s, opacity .3s; }
+.dot.on { background: var(--ink); opacity: 1; }
+.dot:focus-visible { outline: 2px solid var(--yellow); outline-offset: 3px; }
+@media (max-width: 760px) { .svc-in { grid-template-columns: minmax(0, 1fr); } }
+@media (prefers-reduced-motion: reduce) { .svc-panel, .svc li.open .svc-panel, .svc .plus, .svc .plus::after, .slide { transition: none; } }
+
 .ficha-grid { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: 64px; align-items: start; }
 .ficha-grid .sec-head { position: sticky; top: 140px; }
 @media (max-width: 900px) { .ficha-grid { grid-template-columns: minmax(0, 1fr); gap: 44px; } .ficha-grid .sec-head { position: static; } }
@@ -408,12 +439,54 @@ main { overflow-x: clip; }
       <p>Se o que você precisa não está na lista, pergunte no WhatsApp ao pedir o horário.</p>
     </div>
     <ul class="svc">
-      <li class="rv"><h3>Troca de óleo e filtros</h3><p>Óleo do motor e filtros trocados conforme o manual da moto.</p><p class="tags">Óleo · Filtro de óleo · Filtro de ar</p></li>
-      <li class="rv"><h3>Freios</h3><p>Pastilhas, discos, fluido e sangria. Freio testado antes da entrega.</p><p class="tags">Pastilha · Disco · Fluido</p></li>
-      <li class="rv"><h3>Suspensão</h3><p>Retentores, óleo do garfo e amortecedor.</p><p class="tags">Garfo · Retentor · Amortecedor</p></li>
-      <li class="rv"><h3>Kit relação</h3><p>Corrente, coroa e pinhão, com ajuste de folga e lubrificação.</p><p class="tags">Corrente · Coroa · Pinhão</p></li>
-      <li class="rv"><h3>Parte elétrica</h3><p>Bateria, sistema de carga, luzes e partida.</p><p class="tags">Bateria · Luzes · Partida</p></li>
-      <li class="rv"><h3>Revisão geral</h3><p>Inspeção completa pelos pontos da ficha abaixo.</p><p class="tags">Pneus · Cabos · Folgas · Fluidos</p></li>
+      <li class="rv">
+        <h3><button type="button" aria-expanded="false" aria-controls="svc-0">Troca de óleo e filtros<i class="plus" aria-hidden="true"></i></button></h3>
+        <p>Óleo do motor e filtros trocados conforme o manual da moto.</p><p class="tags">Óleo · Filtro de óleo · Filtro de ar</p>
+        <div class="svc-panel" id="svc-0"><div class="svc-in">
+          <p class="svc-desc">Drenamos o óleo usado, trocamos o filtro de óleo e completamos com o óleo indicado no manual da sua moto. Também conferimos o filtro de ar e trocamos quando for preciso. No fim, checamos o nível e olhamos se há vazamentos.</p>
+          <div class="gal" role="group" aria-label="Fotos: Troca de óleo e filtros"><div class="slides"><div class="slide on"><span>Foto 1</span></div><div class="slide"><span>Foto 2</span></div><div class="slide"><span>Foto 3</span></div></div><div class="dots"><button type="button" class="dot on" aria-label="Foto 1"></button><button type="button" class="dot" aria-label="Foto 2"></button><button type="button" class="dot" aria-label="Foto 3"></button></div></div>
+        </div></div>
+      </li>
+      <li class="rv">
+        <h3><button type="button" aria-expanded="false" aria-controls="svc-1">Freios<i class="plus" aria-hidden="true"></i></button></h3>
+        <p>Pastilhas, discos, fluido e sangria. Freio testado antes da entrega.</p><p class="tags">Pastilha · Disco · Fluido</p>
+        <div class="svc-panel" id="svc-1"><div class="svc-in">
+          <p class="svc-desc">Medimos o desgaste de pastilhas e discos, trocamos o fluido e fazemos a sangria para tirar o ar do sistema. Antes de entregar a moto, o freio é testado para garantir que responde firme.</p>
+          <div class="gal" role="group" aria-label="Fotos: Freios"><div class="slides"><div class="slide on"><span>Foto 1</span></div><div class="slide"><span>Foto 2</span></div><div class="slide"><span>Foto 3</span></div></div><div class="dots"><button type="button" class="dot on" aria-label="Foto 1"></button><button type="button" class="dot" aria-label="Foto 2"></button><button type="button" class="dot" aria-label="Foto 3"></button></div></div>
+        </div></div>
+      </li>
+      <li class="rv">
+        <h3><button type="button" aria-expanded="false" aria-controls="svc-2">Suspensão<i class="plus" aria-hidden="true"></i></button></h3>
+        <p>Retentores, óleo do garfo e amortecedor.</p><p class="tags">Garfo · Retentor · Amortecedor</p>
+        <div class="svc-panel" id="svc-2"><div class="svc-in">
+          <p class="svc-desc">Troca de retentores e do óleo do garfo, além da avaliação do amortecedor. Indicado quando o garfo vaza óleo, a moto fica mole ou balança nas frenagens e nas curvas.</p>
+          <div class="gal" role="group" aria-label="Fotos: Suspensão"><div class="slides"><div class="slide on"><span>Foto 1</span></div><div class="slide"><span>Foto 2</span></div><div class="slide"><span>Foto 3</span></div></div><div class="dots"><button type="button" class="dot on" aria-label="Foto 1"></button><button type="button" class="dot" aria-label="Foto 2"></button><button type="button" class="dot" aria-label="Foto 3"></button></div></div>
+        </div></div>
+      </li>
+      <li class="rv">
+        <h3><button type="button" aria-expanded="false" aria-controls="svc-3">Kit relação<i class="plus" aria-hidden="true"></i></button></h3>
+        <p>Corrente, coroa e pinhão, com ajuste de folga e lubrificação.</p><p class="tags">Corrente · Coroa · Pinhão</p>
+        <div class="svc-panel" id="svc-3"><div class="svc-in">
+          <p class="svc-desc">Trocamos corrente, coroa e pinhão em conjunto, para que desgastem por igual. Depois ajustamos a folga conforme a moto e lubrificamos a corrente.</p>
+          <div class="gal" role="group" aria-label="Fotos: Kit relação"><div class="slides"><div class="slide on"><span>Foto 1</span></div><div class="slide"><span>Foto 2</span></div><div class="slide"><span>Foto 3</span></div></div><div class="dots"><button type="button" class="dot on" aria-label="Foto 1"></button><button type="button" class="dot" aria-label="Foto 2"></button><button type="button" class="dot" aria-label="Foto 3"></button></div></div>
+        </div></div>
+      </li>
+      <li class="rv">
+        <h3><button type="button" aria-expanded="false" aria-controls="svc-4">Parte elétrica<i class="plus" aria-hidden="true"></i></button></h3>
+        <p>Bateria, sistema de carga, luzes e partida.</p><p class="tags">Bateria · Luzes · Partida</p>
+        <div class="svc-panel" id="svc-4"><div class="svc-in">
+          <p class="svc-desc">Testamos a bateria, o sistema de carga, as luzes e a partida. Serve para moto que não pega, falha ao ligar ou descarrega a bateria com facilidade.</p>
+          <div class="gal" role="group" aria-label="Fotos: Parte elétrica"><div class="slides"><div class="slide on"><span>Foto 1</span></div><div class="slide"><span>Foto 2</span></div><div class="slide"><span>Foto 3</span></div></div><div class="dots"><button type="button" class="dot on" aria-label="Foto 1"></button><button type="button" class="dot" aria-label="Foto 2"></button><button type="button" class="dot" aria-label="Foto 3"></button></div></div>
+        </div></div>
+      </li>
+      <li class="rv">
+        <h3><button type="button" aria-expanded="false" aria-controls="svc-5">Revisão geral<i class="plus" aria-hidden="true"></i></button></h3>
+        <p>Inspeção completa pelos pontos da ficha abaixo.</p><p class="tags">Pneus · Cabos · Folgas · Fluidos</p>
+        <div class="svc-panel" id="svc-5"><div class="svc-in">
+          <p class="svc-desc">Inspeção completa seguindo a ficha logo abaixo: pneus, corrente, freios, óleo, bateria e luzes, cabos, suspensão e fixações. O que foi conferido fica marcado na ficha.</p>
+          <div class="gal" role="group" aria-label="Fotos: Revisão geral"><div class="slides"><div class="slide on"><span>Foto 1</span></div><div class="slide"><span>Foto 2</span></div><div class="slide"><span>Foto 3</span></div></div><div class="dots"><button type="button" class="dot on" aria-label="Foto 1"></button><button type="button" class="dot" aria-label="Foto 2"></button><button type="button" class="dot" aria-label="Foto 3"></button></div></div>
+        </div></div>
+      </li>
     </ul>
   </div>
 </section>
@@ -1320,7 +1393,7 @@ main { overflow-x: clip; }
   /* ---------- som: botões ---------- */
   var hoverEl = null;
   document.addEventListener('click', function (e) {
-    var t = e.target.closest ? e.target.closest('.btn, .nav a, .st') : null;
+    var t = e.target.closest ? e.target.closest('.btn, .nav a, .st, .svc h3 button') : null;
     if (!t || t.closest('#gate')) return;
     sfx.play(t.classList.contains('btn') && !t.classList.contains('line') ? 'clack' : 'click2');
   });
@@ -1351,5 +1424,37 @@ main { overflow-x: clip; }
 })();
 </script>
 
+<script>
+(function () {
+  var list = document.querySelector('.svc'); if (!list) return;
+  var still = false; try { still = matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
+  var timers = new WeakMap();
+  function show(li, n) {
+    var sl = li.querySelectorAll('.slide'), ds = li.querySelectorAll('.dot');
+    li._i = (n + sl.length) % sl.length;
+    sl.forEach(function (x, k) { x.classList.toggle('on', k === li._i); });
+    ds.forEach(function (x, k) { x.classList.toggle('on', k === li._i); });
+  }
+  function play(li) { stop(li); if (still) return; timers.set(li, setInterval(function () { show(li, (li._i || 0) + 1); }, 3200)); }
+  function stop(li) { var t = timers.get(li); if (t) { clearInterval(t); timers.delete(li); } }
+  function setOpen(li, open) {
+    li.classList.toggle('open', open);
+    li.querySelector('h3 button').setAttribute('aria-expanded', open ? 'true' : 'false');
+    if (open) { show(li, 0); play(li); } else stop(li);
+  }
+  list.querySelectorAll('li').forEach(function (li) { li._i = 0; });
+  list.addEventListener('click', function (e) {
+    var li = e.target.closest('li'); if (!li || !list.contains(li)) return;
+    var dot = e.target.closest('.dot');
+    if (dot) { var ds = Array.prototype.slice.call(li.querySelectorAll('.dot')); show(li, ds.indexOf(dot)); play(li); return; }
+    if (e.target.closest('.svc-panel')) return;
+    var btn = li.querySelector('h3 button');
+    if (!e.target.closest('h3 button')) { btn.click(); return; }
+    var open = !li.classList.contains('open');
+    list.querySelectorAll('li.open').forEach(function (o) { if (o !== li) setOpen(o, false); });
+    setOpen(li, open);
+  });
+})();
+</script>
 </body>
 </html>
